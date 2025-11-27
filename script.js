@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     // 判斷當前頁面是否有班表容器
     const scheduleTableBody = document.querySelector('#schedule-table tbody');
@@ -55,7 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getTodayChineseDay() {
-        const dayNames = ["星期七", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+        // 0=星期日, 1=星期一, ...
+        const dayNames = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
         const date = new Date();
         const dayIndex = date.getDay(); 
         return dayNames[dayIndex];
