@@ -1,139 +1,247 @@
 
-
 document.addEventListener('DOMContentLoaded', () => {
-    // 判斷當前頁面是否有班表容器
+    // 元素參照
     const scheduleTableBody = document.querySelector('#schedule-table tbody');
     const todayTitle = document.getElementById('today-title');
     const noScheduleMessage = document.getElementById('no-schedule-message');
     const scheduleTable = document.getElementById('schedule-table');
+    const tabToday = document.getElementById('tab-today');
+    const tabAll = document.getElementById('tab-all');
+    const searchInput = document.getElementById('search-name');
+    const filterDay = document.getElementById('filter-day');
+    const filterTagsContainer = document.getElementById('filter-tags-container');
 
-    if (scheduleTableBody) {
-        // 讀取 JSON 資料
-        // 加上 cache-busting 參數以防止瀏覽器快取舊資料 (?v=new Date().getTime())
-        fetch('girls.json')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+    // 全域變數
+    let allGirlsData = [];
+    let currentMode = 'today'; // 'today' 或 'all'
+    let activeTags = []; // 已選取的標籤
+
+    // 可用的標籤列表 (可從資料自動生成，這裡先列出常用)
+    const availableTags = ["甜美", "可愛", "高挑", "長髮", "短髮", "大奶", "小隻馬", "氣質", "配合度高", "女友感", "服務好"];
+
+    // 初始化頁面
+    init();
+
+    function init() {
+        if (scheduleTableBody) {
+            // 1. 產生標籤按鈕
+            renderTagFilters();
+
+            // 2. 綁定事件監聽
+            bindEvents();
+
+            // 3. 讀取資料
+            fetch('girls.json?v=' + new Date().getTime())
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    allGirlsData = data;
+                    renderSchedule(); // 初始渲染
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    handleError();
+                });
+        }
+    }
+
+    function bindEvents() {
+        // Tab 切換
+        if (tabToday && tabAll) {
+            tabToday.addEventListener('click', () => switchTab('today'));
+            tabAll.addEventListener('click', () => switchTab('all'));
+        }
+
+        // 搜尋與篩選
+        if (searchInput) searchInput.addEventListener('input', renderSchedule);
+        if (filterDay) filterDay.addEventListener('change', renderSchedule);
+    }
+
+    function switchTab(mode) {
+        currentMode = mode;
+        
+        // 更新 Tab 樣式
+        if (mode === 'today') {
+            tabToday.classList.add('active');
+            tabAll.classList.remove('active');
+            // 切換到今日時，強制將星期篩選歸零，避免邏輯衝突
+            if(filterDay) filterDay.value = 'all'; 
+        } else {
+            tabToday.classList.remove('active');
+            tabAll.classList.add('active');
+        }
+
+        renderSchedule();
+    }
+
+    function renderTagFilters() {
+        if (!filterTagsContainer) return;
+        
+        filterTagsContainer.innerHTML = '';
+        availableTags.forEach(tag => {
+            const span = document.createElement('span');
+            span.className = 'tag-filter';
+            span.textContent = tag;
+            span.onclick = () => {
+                // Toggle 標籤選取狀態
+                if (activeTags.includes(tag)) {
+                    activeTags = activeTags.filter(t => t !== tag);
+                    span.classList.remove('active');
+                } else {
+                    activeTags.push(tag);
+                    span.classList.add('active');
                 }
-                return response.json();
-            })
-            .then(data => {
-                renderSchedule(data);
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-                handleError();
-            });
+                renderSchedule();
+            };
+            filterTagsContainer.appendChild(span);
+        });
     }
 
     function handleError() {
-        // 1. 更新標題狀態
         if (todayTitle) {
             todayTitle.textContent = "⚠️ 無法載入班表";
             todayTitle.style.color = "#7f8c8d";
         }
-
-        // 2. 顯示錯誤訊息
         if (noScheduleMessage) {
-            // 偵測是否為本機檔案開啟 (file://)
-            if (window.location.protocol === 'file:') {
-                noScheduleMessage.innerHTML = `
-                    <div style="text-align: left; display: inline-block;">
-                        <strong>無法讀取資料 (CORS 限制)</strong><br>
-                        瀏覽器基於安全考量，禁止直接讀取電腦上的 JSON 檔。<br><br>
-                        <strong>解決方法：</strong><br>
-                        1. 請將檔案上傳至 <b>GitHub Pages</b> 後瀏覽。<br>
-                        2. 或使用 VS Code 的 <b>Live Server</b> 套件開啟預覽。
-                    </div>
-                `;
-            } else {
-                noScheduleMessage.textContent = "無法載入班表資料，可能是網路問題或資料庫維護中。請稍後再試或直接聯繫波波詢問。";
-            }
+            noScheduleMessage.textContent = "無法載入資料，請稍後再試或直接聯繫波波。";
             noScheduleMessage.classList.remove('hidden');
         }
-
-        // 3. 隱藏表格
         if (scheduleTable) scheduleTable.classList.add('hidden');
     }
 
     function getTodayChineseDay() {
-        // 0=星期日, 1=星期一, ...
         const dayNames = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
         const date = new Date();
-        const dayIndex = date.getDay(); 
-        return dayNames[dayIndex];
+        return dayNames[date.getDay()];
     }
 
-    function renderSchedule(personnelData) {
-        const today = getTodayChineseDay();
-        
-        if (todayTitle) {
-            todayTitle.textContent = `📅 今日 (${today}) 上班美容師`;
-            todayTitle.style.color = "#2c3e50"; // 恢復正常顏色
-        }
+    function renderSchedule() {
+        if (!allGirlsData || allGirlsData.length === 0) return;
 
-        const todayList = personnelData.filter(person => {
-            return person.schedule && person.schedule[today];
+        const today = getTodayChineseDay();
+        const searchTerm = searchInput ? searchInput.value.trim().toLowerCase() : '';
+        const selectedDay = filterDay ? filterDay.value : 'all';
+
+        // 1. 篩選資料
+        let filteredList = allGirlsData.filter(person => {
+            let isMatch = true;
+
+            // 模式篩選 (今日 vs 全部)
+            if (currentMode === 'today') {
+                if (!person.schedule || !person.schedule[today]) isMatch = false;
+            } else {
+                // 全部模式下，如果有選特定星期
+                if (selectedDay !== 'all') {
+                    if (!person.schedule || !person.schedule[selectedDay]) isMatch = false;
+                }
+            }
+
+            // 名字搜尋
+            if (searchTerm && !person.name.toLowerCase().includes(searchTerm)) {
+                isMatch = false;
+            }
+
+            // 標籤篩選 (需包含所有選取的標籤 AND 邏輯)
+            if (activeTags.length > 0) {
+                const personTags = person.tags || [];
+                const hasAllTags = activeTags.every(tag => personTags.includes(tag));
+                if (!hasAllTags) isMatch = false;
+            }
+
+            return isMatch;
         });
 
+        // 2. 更新標題
+        if (todayTitle) {
+            if (currentMode === 'today') {
+                todayTitle.textContent = `📅 今日 (${today}) 上班美容師`;
+            } else {
+                todayTitle.textContent = `📋 全部美容師班表`;
+            }
+        }
+
+        // 3. 渲染表格
         scheduleTableBody.innerHTML = '';
 
-        if (todayList.length === 0) {
+        if (filteredList.length === 0) {
             if (scheduleTable) scheduleTable.classList.add('hidden');
             if (noScheduleMessage) {
-                noScheduleMessage.textContent = "今日目前沒有班表資訊，或資料更新中。請直接聯繫波波！";
+                noScheduleMessage.textContent = "沒有符合條件的美容師。";
                 noScheduleMessage.classList.remove('hidden');
             }
         } else {
             if (scheduleTable) scheduleTable.classList.remove('hidden');
             if (noScheduleMessage) noScheduleMessage.classList.add('hidden');
 
-            todayList.forEach(person => {
+            filteredList.forEach(person => {
                 const tr = document.createElement('tr');
-                const workTime = person.schedule[today];
                 const priceDisplay = person.price ? `$${person.price}` : "請詢問";
                 
-                // 1. 建立圖片儲存格
+                // 決定顯示的時間內容
+                let workTimeDisplay = '';
+                if (currentMode === 'today') {
+                    workTimeDisplay = person.schedule[today];
+                } else {
+                    // 全部模式：顯示有上班的星期，或者如果選了特定星期則顯示該時間
+                    if (selectedDay !== 'all') {
+                        workTimeDisplay = person.schedule[selectedDay];
+                    } else {
+                        // 顯示所有有班的星期 (簡寫)
+                        const days = Object.keys(person.schedule).map(d => d.replace('星期', ''));
+                        workTimeDisplay = days.join(', ');
+                        if(!workTimeDisplay) workTimeDisplay = "暫無班表";
+                    }
+                }
+
+                // --- 1. 照片 ---
                 const tdPhoto = document.createElement('td');
                 const img = document.createElement('img');
-                
-                // 規則：檔案名稱 = 名字.jpg (例如：莫非.jpg)
                 img.src = `${person.name}.jpg`;
                 img.alt = person.name;
                 img.className = 'beautician-img';
-                
-                // 點擊圖片放大 (呼叫 html 中的 openModal 函式)
-                img.onclick = function() {
-                    openModal(this.src);
-                };
-                
-                // 設定圖片載入失敗時的回退機制 (Fallback)
+                img.onclick = function() { openModal(this.src); };
                 img.onerror = function() {
                     this.onerror = null;
                     this.src = 'logo.jpg';
-                    // 若是 logo 就不需要放大功能，取消點擊事件
                     this.onclick = null;
                     this.style.cursor = 'default';
                 };
-
                 tdPhoto.appendChild(img);
                 tr.appendChild(tdPhoto);
 
-                // 2. 建立名字儲存格 (改為超連結) - 修復點擊跳轉問題
+                // --- 2. 名字 & 標籤 ---
                 const tdName = document.createElement('td');
+                
+                // 名字連結
                 const nameLink = document.createElement('a');
-                // 使用 encodeURIComponent 確保中文名字在網址中被正確編碼
                 nameLink.href = `reviews.html?name=${encodeURIComponent(person.name)}`;
                 nameLink.className = 'name-link';
                 nameLink.innerHTML = `<strong>${person.name}</strong> 🔗`;
-                
                 tdName.appendChild(nameLink);
+                
+                // 顯示該美容師的標籤
+                if (person.tags && person.tags.length > 0) {
+                    const tagsDiv = document.createElement('div');
+                    tagsDiv.className = 'tags-display';
+                    person.tags.forEach(t => {
+                        const tSpan = document.createElement('span');
+                        tSpan.className = 'tag-badge';
+                        tSpan.textContent = t;
+                        tagsDiv.appendChild(tSpan);
+                    });
+                    tdName.appendChild(tagsDiv);
+                }
+
                 tr.appendChild(tdName);
 
+                // --- 3. 時間 ---
                 const tdTime = document.createElement('td');
-                tdTime.textContent = workTime;
+                tdTime.textContent = workTimeDisplay;
                 tr.appendChild(tdTime);
 
+                // --- 4. 費用 ---
                 const tdPrice = document.createElement('td');
                 tdPrice.style.color = '#e74c3c';
                 tdPrice.style.fontWeight = 'bold';
