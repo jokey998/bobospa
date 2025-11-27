@@ -1,4 +1,5 @@
 
+
 document.addEventListener('DOMContentLoaded', () => {
     // 判斷當前頁面是否有班表容器
     const scheduleTableBody = document.querySelector('#schedule-table tbody');
@@ -118,10 +119,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 tdPhoto.appendChild(img);
                 tr.appendChild(tdPhoto);
 
-                // 2. 建立名字儲存格 (改為超連結)
+                // 2. 建立名字儲存格 (改為超連結) - 修復點擊跳轉問題
                 const tdName = document.createElement('td');
-                // 建立連結前往 reviews.html 並帶入 name 參數
-                tdName.innerHTML = `<a href="reviews.html?name=${person.name}" class="name-link"><strong>${person.name}</strong> 🔗</a>`;
+                const nameLink = document.createElement('a');
+                // 使用 encodeURIComponent 確保中文名字在網址中被正確編碼
+                nameLink.href = `reviews.html?name=${encodeURIComponent(person.name)}`;
+                nameLink.className = 'name-link';
+                nameLink.innerHTML = `<strong>${person.name}</strong> 🔗`;
+                
+                tdName.appendChild(nameLink);
                 tr.appendChild(tdName);
 
                 const tdTime = document.createElement('td');
