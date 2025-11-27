@@ -17,7 +17,7 @@
         <nav>
             <a href="faq.html">常見問題</a>
             <a href="booking.html">如何約到優質紅牌？</a> 
-            <a href="schedule.html">班表</a>
+            <a href="schedule.html" class="active">班表</a>
             <a href="index.html" class="logo-button">
                 <img src="logo.jpg" alt="波波會館 Logo" class="nav-logo">
             </a>
@@ -34,7 +34,9 @@
         <h2 id="girl-name-title">美容師心得</h2>
         
         <div class="highlight-box" style="text-align: center; padding: 50px 20px;">
-            <p id="review-content" style="font-size: 1.5em; color: #444; line-height: 1.8;">資料載入中...</p>
+            <!-- 使用 div 容器來容納可能的心得卡片，避免 p 標籤嵌套 div 的問題 -->
+            <div id="review-content" style="font-size: 1.2em; color: #444; line-height: 1.8;">資料載入中...</div>
+            
             <p style="margin-top: 30px; font-size: 0.9em; color: #999; border-top: 1px dashed #ccc; padding-top: 20px;">
                 歡迎體驗後與波波分享您的寶貴心得！
             </p>
@@ -97,7 +99,7 @@
             document.title = `${name} - 美容師心得 | 波波舒壓會館`;
             titleEl.textContent = `美容師【${name}】的服務心得`;
 
-            fetch('girls.json')
+            fetch('girls.json?v=' + new Date().getTime())
                 .then(response => {
                     if (!response.ok) throw new Error("Network error");
                     return response.json();
@@ -106,11 +108,28 @@
                     const girl = data.find(g => g.name === name);
 
                     if (girl && girl.review) {
-                        contentEl.innerHTML = girl.review;
+                        // 判斷 review 是陣列(多心得) 還是 字串(單心得)
+                        if (Array.isArray(girl.review)) {
+                            let htmlContent = '<div class="reviews-container" style="text-align: left;">';
+                            girl.review.forEach((r, index) => {
+                                htmlContent += `
+                                    <div class="review-card" style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 5px solid #e91e63;">
+                                        <div style="font-size: 1.1em;">${r}</div>
+                                    </div>
+                                `;
+                            });
+                            htmlContent += '</div>';
+                            contentEl.innerHTML = htmlContent;
+                        } else {
+                            // 舊格式：單一字串
+                            contentEl.innerHTML = girl.review;
+                            contentEl.style.fontSize = "1.5em";
+                        }
                         contentEl.style.color = "#2c3e50";
                     } else {
                         contentEl.innerHTML = "目前暫無文字心得。<br>想了解更多細節，歡迎直接私訊波波！";
                         contentEl.style.color = "#7f8c8d";
+                        contentEl.style.fontSize = "1.5em";
                     }
                 })
                 .catch(error => {
