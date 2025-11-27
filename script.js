@@ -92,20 +92,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 const workTime = person.schedule[today];
                 const priceDisplay = person.price ? `$${person.price}` : "請詢問";
                 
-                // 圖片路徑：名字.jpg
-                const imgPath = `${person.name}.jpg`;
+                // 1. 建立圖片儲存格
+                const tdPhoto = document.createElement('td');
+                const img = document.createElement('img');
+                
+                // 使用 encodeURIComponent 確保中文檔名在各種瀏覽器/伺服器都能正確解析
+                // 假設檔名格式為：名字.jpg (全部小寫副檔名)
+                img.src = `${encodeURIComponent(person.name)}.jpg`;
+                img.alt = person.name;
+                img.className = 'beautician-img';
+                
+                // 設定圖片載入失敗時的回退機制 (Fallback)
+                // 必須在設定 src 之前綁定，以防圖片已快取導致事件沒觸發(雖少見但保險)
+                img.onerror = function() {
+                    this.onerror = null; // 防止無限迴圈
+                    this.src = 'logo.jpg'; // 若無照片，顯示 Logo
+                };
 
-                tr.innerHTML = `
-                    <td>
-                        <img src="${imgPath}" 
-                             alt="${person.name}" 
-                             class="beautician-img" 
-                             onerror="this.onerror=null;this.src='logo.jpg';">
-                    </td>
-                    <td><strong>${person.name}</strong></td>
-                    <td>${workTime}</td>
-                    <td style="color: #e74c3c; font-weight: bold;">${priceDisplay}</td>
-                `;
+                tdPhoto.appendChild(img);
+                tr.appendChild(tdPhoto);
+
+                // 2. 建立其他儲存格
+                const tdName = document.createElement('td');
+                tdName.innerHTML = `<strong>${person.name}</strong>`;
+                tr.appendChild(tdName);
+
+                const tdTime = document.createElement('td');
+                tdTime.textContent = workTime;
+                tr.appendChild(tdTime);
+
+                const tdPrice = document.createElement('td');
+                tdPrice.style.color = '#e74c3c';
+                tdPrice.style.fontWeight = 'bold';
+                tdPrice.textContent = priceDisplay;
+                tr.appendChild(tdPrice);
+
                 scheduleTableBody.appendChild(tr);
             });
         }
