@@ -96,25 +96,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 const tdPhoto = document.createElement('td');
                 const img = document.createElement('img');
                 
-                // 使用 encodeURIComponent 確保中文檔名在各種瀏覽器/伺服器都能正確解析
-                // 假設檔名格式為：名字.jpg (全部小寫副檔名)
-                img.src = `${encodeURIComponent(person.name)}.jpg`;
+                // 規則：檔案名稱 = 名字.jpg (例如：莫非.jpg)
+                img.src = `${person.name}.jpg`;
                 img.alt = person.name;
                 img.className = 'beautician-img';
                 
+                // 點擊圖片放大 (呼叫 html 中的 openModal 函式)
+                img.onclick = function() {
+                    openModal(this.src);
+                };
+                
                 // 設定圖片載入失敗時的回退機制 (Fallback)
-                // 必須在設定 src 之前綁定，以防圖片已快取導致事件沒觸發(雖少見但保險)
                 img.onerror = function() {
-                    this.onerror = null; // 防止無限迴圈
-                    this.src = 'logo.jpg'; // 若無照片，顯示 Logo
+                    this.onerror = null;
+                    this.src = 'logo.jpg';
+                    // 若是 logo 就不需要放大功能，取消點擊事件
+                    this.onclick = null;
+                    this.style.cursor = 'default';
                 };
 
                 tdPhoto.appendChild(img);
                 tr.appendChild(tdPhoto);
 
-                // 2. 建立其他儲存格
+                // 2. 建立名字儲存格 (改為超連結)
                 const tdName = document.createElement('td');
-                tdName.innerHTML = `<strong>${person.name}</strong>`;
+                // 建立連結前往 reviews.html 並帶入 name 參數
+                tdName.innerHTML = `<a href="reviews.html?name=${person.name}" class="name-link"><strong>${person.name}</strong> 🔗</a>`;
                 tr.appendChild(tdName);
 
                 const tdTime = document.createElement('td');

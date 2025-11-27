@@ -50,23 +50,29 @@
     <link rel="icon" href="logo.jpg" type="image/jpeg">
     
     <style>
-        /* 美容師照片樣式優化 */
+        /* 美容師照片樣式優化 - 加大尺寸 */
         .beautician-img {
-            width: 70px;
-            height: 70px;
-            object-fit: cover; /* 保持比例並填滿圓形 */
-            border-radius: 50%; /* 圓形頭像 */
-            border: 3px solid #fff; /* 白色邊框 */
-            box-shadow: 0 3px 6px rgba(0,0,0,0.15); /* 陰影增加立體感 */
+            width: 100px; /* 從 70px 加大到 100px */
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
             display: block;
             margin: 0 auto;
             background-color: #f0f0f0;
+            cursor: zoom-in; /* 滑鼠移上去顯示放大鏡 */
+            transition: transform 0.2s;
+        }
+
+        .beautician-img:hover {
+            transform: scale(1.1); /* 滑鼠懸停稍微放大 */
         }
         
         /* 表格欄位寬度調整 */
         #schedule-table th:first-child, 
         #schedule-table td:first-child {
-            width: 90px;
+            width: 130px; /* 配合照片加大欄位 */
             text-align: center;
         }
 
@@ -74,16 +80,87 @@
         #schedule-table td {
             vertical-align: middle;
         }
+
+        /* 美容師名字連結樣式 */
+        .name-link {
+            color: #2980b9;
+            text-decoration: none;
+            font-size: 1.1em;
+            display: inline-block;
+            padding: 5px 10px;
+            border: 1px solid transparent;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .name-link:hover {
+            background-color: #ebf5fb;
+            border-color: #aed6f1;
+            text-decoration: underline;
+        }
+
+        /* --- 燈箱 (Lightbox) 樣式 --- */
+        .modal {
+            display: none; /* 預設隱藏 */
+            position: fixed;
+            z-index: 9999;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9); /* 黑色半透明背景 */
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 5px;
+            border: 2px solid #fff;
+            animation-name: zoom;
+            animation-duration: 0.3s;
+        }
+
+        @keyframes zoom {
+            from {transform:scale(0)}
+            to {transform:scale(1)}
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
         
         /* 手機版調整 */
         @media (max-width: 600px) {
             .beautician-img {
-                width: 55px;
-                height: 55px;
+                width: 75px;
+                height: 75px;
             }
             #schedule-table th:first-child, 
             #schedule-table td:first-child {
-                width: 70px;
+                width: 90px;
+            }
+            .close {
+                top: 10px;
+                right: 20px;
+                font-size: 30px;
             }
         }
     </style>
@@ -114,8 +191,8 @@
         <table id="schedule-table" class="hidden">
             <thead>
                 <tr>
-                    <th>照片</th>
-                    <th>美容師</th>
+                    <th>照片 (點擊放大)</th>
+                    <th>美容師 (查看心得)</th>
                     <th>上班時間</th>
                     <th>費用</th>
                 </tr>
@@ -133,6 +210,12 @@
             </p>
         </section>
     </main>
+
+    <!-- 燈箱 Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImg">
+    </div>
 
     <footer>
         <div class="footer-contact">
@@ -158,5 +241,26 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        // 燈箱控制邏輯
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImg");
+
+        function openModal(src) {
+            modal.style.display = "block";
+            modalImg.src = src;
+        }
+
+        function closeModal() {
+            modal.style.display = "none";
+        }
+
+        // 點擊背景也可以關閉
+        modal.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
 </body>
 </html>

@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美容師心得評價 | 波波舒壓會館</title>
+    <meta name="description" content="查看波波會館美容師的服務心得與評價。林森北路最真實的半套按摩體驗分享。" />
+    <meta name="robots" content="noindex"> <!-- 心得頁內容較少，暫時建議不索引，避免空內容影響SEO -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="logo.jpg" type="image/jpeg">
+</head>
+<body class="contact"> <!-- 使用 contact 背景或其他喜歡的背景 -->
+
+    <header>
+        <h1>波波會館(台北中山林森五木 半套按摩舒壓紓壓)</h1>
+        <nav>
+            <a href="faq.html">常見問題</a>
+            <a href="booking.html">如何約到優質紅牌？</a> 
+            <a href="schedule.html">即時班表</a>
+            <a href="index.html" class="logo-button">
+                <img src="logo.jpg" alt="波波會館 Logo" class="nav-logo">
+            </a>
+            <a href="about_us.html">為何選擇我們？</a>
+            <a href="contact.html">預約/現場接待</a>
+        </nav>
+    </header>
+
+    <main class="content-page">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <a href="schedule.html" class="hero-btn secondary-btn" style="padding: 5px 15px; font-size: 0.9em;">← 返回班表</a>
+        </div>
+
+        <h2 id="girl-name-title">美容師心得</h2>
+        
+        <div class="highlight-box" style="text-align: center; padding: 50px 20px;">
+            <p id="review-content" style="font-size: 1.5em; color: #444; line-height: 1.8;">資料載入中...</p>
+            <p style="margin-top: 30px; font-size: 0.9em; color: #999; border-top: 1px dashed #ccc; padding-top: 20px;">
+                歡迎體驗後與波波分享您的寶貴心得！
+            </p>
+        </div>
+
+        <section style="margin-top: 30px;">
+            <h3>直接預約此美容師</h3>
+            <p>心動了嗎？點擊下方按鈕立即預約！</p>
+            <div class="hero-buttons-stacked">
+                <a href="https://line.me/ti/p/~jokey98" class="hero-btn primary-btn">
+                    Line 預約: jokey98
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-contact">
+            <div class="info-item signature">
+                <p>台妹舒壓放鬆詢問</p>
+            </div>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span class="label">Line:</span>
+                    <a href="https://line.me/ti/p/~jokey98" target="_blank" class="value">jokey98</a>
+                </div>
+                <div class="contact-item">
+                    <span class="label">Telegram:</span>
+                    <a href="https://t.me/jokey998" target="_blank" class="value">jokey998</a>
+                </div>
+            </div>
+        </div>
+        <p class="copyright">&copy; 2025 波波舒壓會館. 專業舒壓幹部為您把關。</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. 取得網址上的美容師名字
+            const params = new URLSearchParams(window.location.search);
+            const name = params.get('name');
+            const titleEl = document.getElementById('girl-name-title');
+            const contentEl = document.getElementById('review-content');
+            
+            if (!name) {
+                contentEl.textContent = "請先從班表選擇一位美容師。";
+                return;
+            }
+
+            // 更新標題
+            document.title = `${name} - 美容師心得 | 波波舒壓會館`;
+            titleEl.textContent = `美容師【${name}】的服務心得`;
+
+            // 2. 讀取 girls.json 尋找對應的心得
+            fetch('girls.json')
+                .then(response => {
+                    if (!response.ok) throw new Error("Network error");
+                    return response.json();
+                })
+                .then(data => {
+                    // 在資料中尋找名字相符的美容師
+                    const girl = data.find(g => g.name === name);
+
+                    if (girl && girl.review) {
+                        // 如果有找到且有心得，顯示心得 (支援 HTML 標籤如 <br>)
+                        contentEl.innerHTML = girl.review;
+                        contentEl.style.color = "#2c3e50"; // 深色字體比較好讀
+                    } else {
+                        // 沒找到或沒心得
+                        contentEl.innerHTML = "目前暫無文字心得。<br>想了解更多細節，歡迎直接私訊波波！";
+                        contentEl.style.color = "#7f8c8d";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    contentEl.textContent = "無法載入心得資料，請稍後再試。";
+                });
+        });
+    </script>
+</body>
+</html>
