@@ -39,6 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(data => {
                     allGirlsData = data;
                     renderSchedule(); // 初始渲染
+                    // 初始狀態下如果是 'today'，停用星期篩選
+                    updateFilterState();
                 })
                 .catch(error => {
                     console.error('Fetch error:', error);
@@ -66,14 +68,32 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mode === 'today') {
             tabToday.classList.add('active');
             tabAll.classList.remove('active');
-            // 切換到今日時，強制將星期篩選歸零，避免邏輯衝突
+            // 切換到今日時，強制將星期篩選歸零
             if(filterDay) filterDay.value = 'all'; 
         } else {
             tabToday.classList.remove('active');
             tabAll.classList.add('active');
         }
-
+        
+        updateFilterState();
         renderSchedule();
+    }
+    
+    // 控制篩選器的可用狀態
+    function updateFilterState() {
+        if (!filterDay) return;
+        
+        if (currentMode === 'today') {
+            filterDay.disabled = true;
+            filterDay.style.opacity = '0.5';
+            filterDay.style.cursor = 'not-allowed';
+            filterDay.title = "今日模式下無法篩選星期";
+        } else {
+            filterDay.disabled = false;
+            filterDay.style.opacity = '1';
+            filterDay.style.cursor = 'pointer';
+            filterDay.title = "";
+        }
     }
 
     function renderTagFilters() {
