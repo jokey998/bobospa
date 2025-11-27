@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>即時班表 | 台北林森北路舒壓會館今日名單 - 波波會館</title>
+    <meta name="description" content="查詢今日台北林森北路按摩會館上班名單。波波會館提供每日即時更新的美容師班表與價格，透明公開，讓您輕鬆預約最優質的半套舒壓服務。">
+    <meta name="keywords" content="舒壓班表, 按摩名單, 林森北路班表, 今日上班妹, 台北按摩價格">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="即時班表 - 波波舒壓會館">
+    <meta property="og:description" content="點擊查看今日上班美容師名單與價格。">
+    <meta property="og:image" content="logo.jpg">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="logo.jpg" type="image/jpeg">
+</head>
+<body class="lounge-background">
+    <header>
+        <h1>波波會館(台北中山林森五木 半套按摩舒壓紓壓)</h1>
+        <nav>
+            <a href="faq.html">常見問題</a>
+            <a href="booking.html">如何約到優質紅牌？</a> 
+            <a href="schedule.html" class="active">即時班表</a>
+            <a href="index.html" class="logo-button">
+                <img src="logo.jpg" alt="波波會館 Logo" class="nav-logo">
+            </a>
+            <a href="about_us.html">為何選擇我們？</a>
+            <a href="contact.html">預約/現場接待</a>
+        </nav>
+    </header>
+
+    <main class="content-page">
+        <h2 id="today-title">📅 今日班表載入中...</h2>
+        
+        <div id="no-schedule-message" class="hidden">
+            今日目前沒有班表資訊，或資料更新中。<br>
+            請直接聯繫波波詢問最新名單！
+        </div>
+
+        <table id="schedule-table" class="hidden">
+            <thead>
+                <tr>
+                    <th>美容師</th>
+                    <th>上班時間</th>
+                    <th>費用</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- JavaScript 將會自動填入資料 -->
+            </tbody>
+        </table>
+
+        <section class="highlight-box" style="margin-top: 20px;">
+            <h3>💡 預約提醒</h3>
+            <p>班表僅供參考，實際狀況可能因美容師臨時請假或預約額滿而變動。建議看到喜歡的美容師，直接截圖私訊波波預約保留時段！</p>
+            <p style="text-align: center; margin-top: 15px;">
+                <a href="https://line.me/ti/p/~jokey98" class="hero-btn primary-btn" style="display:inline-block; padding: 10px 20px; font-size: 1em;">立即 Line 預約</a>
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-contact">
+            <div class="info-item signature">
+                <p>台妹舒壓放鬆詢問</p>
+            </div>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span class="label">Line:</span>
+                    <a href="https://line.me/ti/p/~jokey98" target="_blank" class="value">jokey98</a>
+                </div>
+                <div class="contact-item">
+                    <span class="label">Telegram:</span>
+                    <a href="https://t.me/jokey998" target="_blank" class="value">jokey998</a>
+                </div>
+                <div class="contact-item">
+                    <span class="label">Telegram班表頻道:</span>
+                    <a href="https://t.me/+GlJY15nX6lY3NmJl" target="_blank" class="value">波波會館🇹🇼本土台灣娛樂優選</a>
+                </div>
+            </div>
+        </div>
+        <p class="copyright">&copy; 2025 波波舒壓會館. 台北中山區五木半套按摩推薦。</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
