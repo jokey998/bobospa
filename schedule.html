@@ -47,6 +47,40 @@
 
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="logo.jpg" type="image/jpeg">
+    
+    <style>
+        /* 美容師照片樣式優化 */
+        .beautician-img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover; /* 保持比例並填滿圓形 */
+            border-radius: 50%; /* 圓形頭像 */
+            border: 3px solid #fff; /* 白色邊框 */
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15); /* 陰影增加立體感 */
+            display: block;
+            margin: 0 auto;
+            background-color: #f0f0f0;
+        }
+        
+        /* 表格欄位寬度調整 */
+        #schedule-table th:first-child, 
+        #schedule-table td:first-child {
+            width: 90px;
+            text-align: center;
+        }
+        
+        /* 手機版調整 */
+        @media (max-width: 600px) {
+            .beautician-img {
+                width: 55px;
+                height: 55px;
+            }
+            #schedule-table th:first-child, 
+            #schedule-table td:first-child {
+                width: 70px;
+            }
+        }
+    </style>
 </head>
 <body class="lounge-background">
     <header>
@@ -74,6 +108,7 @@
         <table id="schedule-table" class="hidden">
             <thead>
                 <tr>
+                    <th>照片</th>
                     <th>美容師</th>
                     <th>上班時間</th>
                     <th>費用</th>

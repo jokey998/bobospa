@@ -91,8 +91,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 const tr = document.createElement('tr');
                 const workTime = person.schedule[today];
                 const priceDisplay = person.price ? `$${person.price}` : "請詢問";
+                
+                // 圖片路徑：名字.jpg
+                const imgPath = `${person.name}.jpg`;
 
                 tr.innerHTML = `
+                    <td>
+                        <img src="${imgPath}" 
+                             alt="${person.name}" 
+                             class="beautician-img" 
+                             onerror="this.onerror=null;this.src='logo.jpg';">
+                    </td>
                     <td><strong>${person.name}</strong></td>
                     <td>${workTime}</td>
                     <td style="color: #e74c3c; font-weight: bold;">${priceDisplay}</td>
