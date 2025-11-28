@@ -1,129 +1,122 @@
-/* style.css */
+/* style.css - 完整修復版 */
 
-/* --- 1. 基本設定與通用樣式 --- */
+/* --- 1. 基本設定與通用背景 --- */
 body {
     font-family: '微軟正黑體', 'Microsoft JhengHei', Arial, sans-serif;
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    color: #333; /* 預設內容字體顏色為中性深灰 */
+    color: #333;
     
-    /* 通用背景屬性 */
-    background-size: cover; /* 讓圖片覆蓋整個視窗 */
-    background-position: center center; /* 圖片居中顯示 */
-    background-attachment: fixed; /* 圖片固定不動，捲動頁面時圖片位置不變 */
-    background-color: #f4f7f6; /* 如果圖片加載失敗，顯示的備用顏色 */
+    /* 背景屬性 */
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    background-color: #f4f7f6;
 }
 
+/* 頁面背景圖設定 */
+body:not(.lounge-background) { background-image: url('chair.jpg'); }
+body.contact { background-image: url('contact.jpg'); }
+body.booking { background-image: url('beach.png'); }
+body.faq { background-image: url('bed.jpg'); }
+body.lounge-background { background-image: url('main.jpg'); }
 
-/* *** 預設/其他頁面背景 (酒店大廳圖) *** */
-body:not(.lounge-background) {
-    background-image: url('chair.jpg'); 
-}
-body.contact {
-    background-image: url('contact.jpg');
-}
-body.booking {
-    background-image: url('beach.png');
-}
-body.faq {
-    background-image: url('bed.jpg');
-}
-
-/* *** schedule.html 專屬背景 (紫色沙發圖) *** */
-body.lounge-background {
-    background-image: url('main.jpg');
-}
-
+/* --- 2. Header & Navigation (全站通用) --- */
 header {
-    background-color: rgba(85, 85, 85, 0.95); /* Header 背景加深 */
+    background-color: rgba(50, 50, 50, 0.95); /* 深灰質感背景 */
     color: white;
-    padding: 15px 0;
+    padding: 10px 0;
     text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     position: sticky;
     top: 0;
     z-index: 1000;
+    backdrop-filter: blur(5px);
 }
 
 header h1 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 1.6em;
+    margin: 5px 0 10px 0;
+    font-size: 1.5em;
     font-weight: 600;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    letter-spacing: 1px;
 }
 
 nav {
-    margin-top: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    gap: 5px;
 }
 
 nav a {
-    color: white;
+    color: #eee;
     text-decoration: none;
     padding: 8px 12px;
-    margin: 2px;
     border-radius: 5px;
     transition: all 0.3s;
     font-size: 0.95em;
+    font-weight: 500;
 }
 
 nav a:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #fff;
 }
 
 nav a.active {
-    background-color: rgba(255, 255, 255, 0.25);
+    background-color: rgba(255, 255, 255, 0.2);
     font-weight: bold;
+    color: #fff;
     border-bottom: 2px solid #e67e22;
 }
 
-/* --- 導航列 Logo 按鈕樣式 --- */
+/* Logo 按鈕特殊樣式 */
 nav a.logo-button {
-    padding: 2px 8px; 
-    background-color: rgba(255, 255, 255, 0.95); 
+    padding: 0 10px; 
+    background-color: transparent; 
     border-radius: 8px;
-    margin: 0 10px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    margin: 0 5px;
+    border-bottom: none !important;
 }
 
 nav a.logo-button:hover {
-    background-color: #fff;
+    background-color: rgba(255,255,255,0.1);
     transform: scale(1.05);
 }
 
 .nav-logo {
-    height: 55px;
+    height: 55px; /* Logo 高度 */
     width: auto;
     vertical-align: middle;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
 }
 
+/* --- 3. 主要容器 Main --- */
 main {
-    max-width: 1000px; /* 首頁寬度稍微縮小，讓閱讀更集中 */
+    max-width: 1100px;
     margin: 30px auto;
     padding: 0 15px;
+    min-height: 60vh;
 }
 
-/* --- 首頁 Hero Section 設計優化 --- */
+/* --- 4. 首頁專用樣式 (Hero Section) --- */
 .hero-page {
     display: flex;
     justify-content: center;
 }
 
-/* 高級感毛玻璃卡片容器 */
 .main-hero-card {
-    background-color: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(10px); /* 毛玻璃效果 */
+    background-color: rgba(255, 255, 255, 0.9); /* 提高不透明度以增加閱讀性 */
+    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-radius: 16px;
     padding: 40px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.6);
     max-width: 800px;
     width: 100%;
 }
@@ -145,7 +138,113 @@ main {
     line-height: 1.8;
 }
 
-/* 快速選單膠囊樣式 */
+/* --- 5. 內頁樣式 (修復部分) --- */
+.content-page {
+    background-color: rgba(255, 255, 255, 0.93); /* 恢復內頁白底背景 */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255,255,255,0.5);
+}
+
+.content-page h2 {
+    color: #2c3e50;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+    text-align: center;
+}
+
+.content-page h3 {
+    color: #d35400; /* 標題跳色 */
+    margin-top: 30px;
+    font-size: 1.4em;
+    border-left: 4px solid #d35400;
+    padding-left: 10px;
+}
+
+.content-page section {
+    margin-bottom: 30px;
+}
+
+.content-page p, .content-page li {
+    font-size: 1.05em;
+    color: #444;
+}
+
+/* 重點方塊 (About, Booking, Guide 常用) */
+.highlight-box {
+    border: 2px solid #e0e0e0;
+    background-color: #fcfcfc;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    transition: transform 0.2s;
+}
+
+.highlight-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    border-color: #d35400;
+}
+
+/* FAQ 樣式 */
+.faq-list {
+    display: grid;
+    gap: 15px;
+}
+
+.faq-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.faq-item h3 {
+    color: #2c3e50;
+    border-left: none;
+    padding-left: 0;
+    margin-top: 0;
+}
+
+/* --- 6. 表格樣式 (Schedule, Price List) --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden; /* 讓圓角生效 */
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    background-color: #34495e;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* --- 7. 按鈕與連結組件 --- */
+
+/* 快速選單膠囊 (首頁用) */
 .quick-nav-label {
     font-weight: bold;
     color: #666;
@@ -192,114 +291,95 @@ main {
     border-color: #ffcccc;
 }
 
-.quick-link-pill.hot:hover {
-    background-color: #c0392b;
-    color: white;
-}
+.quick-link-pill.hot:hover { background-color: #c0392b; color: white; }
 
-/* 聯絡按鈕群組 (重點設計) */
+/* 品牌按鈕 (Line, Telegram) */
 .contact-section-label {
     font-size: 1.2em;
     font-weight: bold;
     color: #d35400;
     margin: 10px 0 15px 0;
     display: block;
+    text-align: center;
 }
 
-.cta-group {
+.cta-group, .hero-buttons-stacked {
     display: flex;
     flex-direction: column;
     gap: 15px;
     max-width: 400px;
-    margin: 0 auto 40px auto;
+    margin: 0 auto 30px auto;
 }
 
-/* 通用大按鈕樣式 */
-.brand-btn {
+.brand-btn, .hero-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 15px 20px;
-    border-radius: 12px;
+    padding: 12px 20px;
+    border-radius: 10px;
     text-decoration: none;
     font-size: 1.1em;
     font-weight: bold;
     color: white;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: all 0.2s;
     box-shadow: 0 4px 6px rgba(0,0,0,0.15);
-    position: relative;
-    overflow: hidden;
+    border: none;
+    cursor: pointer;
 }
 
-.brand-btn:hover {
+.brand-btn:hover, .hero-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 12px rgba(0,0,0,0.25);
 }
 
-.brand-btn:active {
-    transform: translateY(-1px);
+/* 按鈕顏色定義 */
+.btn-line, .primary-btn { background-color: #06C755; } /* Line */
+.btn-line:hover, .primary-btn:hover { background-color: #05b54d; }
+
+.btn-tg { background-color: #0088cc; } /* Telegram */
+.btn-tg:hover { background-color: #0077b5; }
+
+.btn-channel, .secondary-btn { 
+    background: linear-gradient(135deg, #8e44ad, #c0392b); 
+}
+.btn-channel:hover, .secondary-btn:hover { 
+    background: linear-gradient(135deg, #9b59b6, #e74c3c); 
 }
 
-/* Line 按鈕 */
-.btn-line {
-    background-color: #06C755; /* Line 官方綠 */
+/* 普通次級按鈕 (用在內頁跳轉) */
+.content-page .secondary-btn {
+    background: #7f8c8d; /* 灰色系 */
 }
-.btn-line:hover {
-    background-color: #05b54d;
-}
-
-/* Telegram 按鈕 */
-.btn-tg {
-    background-color: #0088cc; /* Telegram 官方藍 */
-}
-.btn-tg:hover {
-    background-color: #0077b5;
+.content-page .secondary-btn:hover {
+    background: #95a5a6;
 }
 
-/* 頻道按鈕 (最顯眼) */
-.btn-channel {
-    background: linear-gradient(135deg, #8e44ad, #c0392b); /* 紫紅漸層 */
-    font-size: 1.15em;
-    border: 2px solid rgba(255,255,255,0.2);
-}
-.btn-channel:hover {
-    background: linear-gradient(135deg, #9b59b6, #e74c3c);
-}
-
-/* SEO 區塊樣式 */
+/* --- 8. SEO 區塊樣式 --- */
 .seo-content-block {
     background: #fff;
-    padding: 30px;
-    border-radius: 12px;
+    padding: 25px;
+    border-radius: 10px;
     margin-top: 20px;
     text-align: left;
     color: #444;
     border-left: 5px solid #e67e22;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.02);
 }
 
 .seo-content-block h2 {
     color: #2c3e50;
     margin-top: 0;
-    font-size: 1.4em;
+    font-size: 1.3em;
     border-bottom: 1px dashed #ccc;
     padding-bottom: 10px;
-    margin-bottom: 15px;
 }
 
 .seo-info-list {
-    margin-top: 20px;
-    padding-left: 20px;
     background-color: #f9f9f9;
     padding: 15px 15px 15px 35px;
     border-radius: 8px;
 }
 
-.seo-info-list li {
-    margin-bottom: 10px;
-}
-
-/* --- 頁尾樣式更新 --- */
+/* --- 9. Footer --- */
 footer {
     padding: 30px 20px;
     margin-top: 40px;
@@ -320,14 +400,13 @@ footer {
     font-weight: bold;
     color: #fff;
     margin-bottom: 15px;
-    letter-spacing: 1px;
 }
 
 .contact-info {
     display: flex;
-    flex-direction: column; /* 手機優先，垂直排列 */
-    align-items: center;
-    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
 }
 
 .contact-item {
@@ -337,7 +416,6 @@ footer {
     background: rgba(255,255,255,0.05);
     padding: 8px 15px;
     border-radius: 20px;
-    width: fit-content;
 }
 
 .contact-item .label {
@@ -349,12 +427,11 @@ footer {
 .contact-item .value {
     color: white;
     text-decoration: none;
-    transition: color 0.3s;
 }
 
 .contact-item .value:hover {
-    color: #e67e22;
     text-decoration: underline;
+    color: #e67e22;
 }
 
 .copyright {
@@ -363,54 +440,62 @@ footer {
     color: #888;
 }
 
-/* --- 其他頁面樣式維持 --- */
-#personnel-list, #schedule-table, .content-page, .faq-item, .highlight-box {
-    /* 這裡可以繼承之前的樣式，或是確保新增加的樣式不衝突 */
-    /* 為了簡潔，這裡只列出主要修改 */
+/* 提示框 */
+.note {
+    font-style: italic;
+    font-weight: bold;
+    color: #555;
+    padding: 15px;
+    background-color: #fff3e0;
+    border-left: 5px solid #ff9800;
+    border-radius: 4px;
+    display: block;
+    margin-top: 10px;
 }
 
-/* RWD 響應式設計優化 */
-@media (min-width: 768px) {
-    .contact-info {
-        flex-direction: row;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-    
-    header h1 {
-        font-size: 2em;
-    }
-}
+.hidden { display: none; }
 
+/* --- 10. RWD 響應式 --- */
 @media (max-width: 768px) {
     header h1 {
-        font-size: 1.3em;
-        padding: 0 10px;
+        font-size: 1.2em;
+        padding: 0 5px;
+    }
+
+    nav {
+        flex-direction: row; /* 手機版還是橫向排列比較好 */
+        padding: 0 5px;
     }
 
     nav a {
         padding: 6px 10px;
-        font-size: 0.9em;
+        font-size: 0.85em;
+        margin: 2px;
     }
     
+    /* 手機版 Logo 調整 */
     nav a.logo-button {
-        order: -1; /* 手機版讓 Logo 在最上面或中間 */
+        order: -1; /* Logo 置頂 */
         width: 100%;
-        margin-bottom: 10px;
-        background: transparent;
-        box-shadow: none;
+        text-align: center;
+        margin-bottom: 5px;
     }
+    .nav-logo { height: 60px; }
+
+    main { padding: 0 10px; }
     
-    nav a.logo-button:hover {
-        background: transparent;
-        transform: none;
+    .content-page { padding: 20px 15px; }
+
+    /* 表格 RWD */
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
     }
 
-    .main-hero-card {
-        padding: 25px 15px;
-    }
-    
-    .hero-title {
-        font-size: 1.5em;
+    .contact-info {
+        flex-direction: column;
+        align-items: center;
     }
 }
+
