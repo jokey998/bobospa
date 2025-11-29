@@ -1,3 +1,4 @@
+
 /* style.css - 完整修復版 */
 
 /* --- 1. 基本設定與通用背景 --- */
@@ -22,25 +23,27 @@ body.booking { background-image: url('beach.png'); }
 body.faq { background-image: url('bed.jpg'); }
 body.lounge-background { background-image: url('main.jpg'); }
 
-/* --- 2. Header & Navigation (全站通用) --- */
+/* --- 2. Header & Navigation (全站通用 - 設計感升級版) --- */
 header {
-    background-color: rgba(50, 50, 50, 0.95); /* 深灰質感背景 */
+    background-color: rgba(40, 40, 40, 0.95); /* 深灰質感背景 */
     color: white;
-    padding: 10px 0;
+    padding: 12px 0;
     text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     position: sticky;
     top: 0;
     z-index: 1000;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 header h1 {
-    margin: 5px 0 10px 0;
-    font-size: 1.5em;
-    font-weight: 600;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-    letter-spacing: 1px;
+    margin: 5px 0 15px 0;
+    font-size: 1.4em;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    letter-spacing: 1.5px;
+    color: #f1c40f; /* 金色標題 */
 }
 
 nav {
@@ -48,34 +51,130 @@ nav {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    gap: 12px; /* 增加間距 */
+    padding: 0 10px;
+}
+
+/* --- 下拉選單容器 --- */
+.nav-item-dropdown {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px; /* 增加底部緩衝區，防止滑鼠快速移動時選單消失 */
+    margin-bottom: -10px; /* 抵銷 padding 造成的佈局影響 */
+}
+
+/* --- 一般導航按鈕樣式 (Ghost Button 風格) --- */
+.nav-btn {
+    color: #ecf0f1;
+    text-decoration: none;
+    padding: 8px 18px;
+    border-radius: 25px; /* 圓角膠囊 */
+    transition: all 0.3s ease;
+    font-size: 0.95em;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* 細邊框 */
+    background-color: rgba(255, 255, 255, 0.05); /* 極淡背景 */
+    display: flex;
+    align-items: center;
     gap: 5px;
 }
 
-nav a {
-    color: #eee;
-    text-decoration: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    transition: all 0.3s;
-    font-size: 0.95em;
-    font-weight: 500;
-}
-
-nav a:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-    color: #fff;
-}
-
-nav a.active {
+.nav-btn:hover, .nav-item-dropdown:hover .nav-btn {
     background-color: rgba(255, 255, 255, 0.2);
-    font-weight: bold;
+    border-color: rgba(255, 255, 255, 0.8);
     color: #fff;
-    border-bottom: 2px solid #e67e22;
+    box-shadow: 0 0 10px rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+}
+
+/* 當前頁面狀態 */
+.nav-btn.active {
+    background-color: rgba(255, 255, 255, 0.25);
+    border-color: #fff;
+    font-weight: bold;
+}
+
+/* --- 下拉選單內容 (Dropdown Content) --- */
+.dropdown-content {
+    display: block; /* 改為 block 但透過 opacity/visibility 控制，以支援動畫 */
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    top: 100%; /* 在按鈕正下方 */
+    left: 50%;
+    transform: translateX(-50%) translateY(10px); /* 初始位置稍微偏下 */
+    background-color: rgba(30, 30, 30, 0.98); /* 深色背景 */
+    min-width: 170px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    border-radius: 12px;
+    z-index: 2000;
+    padding: 8px 0;
+    border: 1px solid rgba(255,255,255,0.15);
+    margin-top: 5px; /* 視覺上的間距 */
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); /* 平滑過渡 */
+}
+
+/* ★★★ 關鍵優化：隱形橋樑 (Invisible Bridge) ★★★ 
+   這個偽元素填補了按鈕與選單之間的空隙，
+   確保滑鼠移動時不會因為經過「空隙」而導致 hover 狀態失效。
+*/
+.dropdown-content::after {
+    content: "";
+    position: absolute;
+    bottom: 100%; /* 位於選單正上方 */
+    left: 0;
+    width: 100%;
+    height: 30px; /* 橋樑高度，足夠覆蓋 margin-top 的間隙 */
+    background-color: transparent; /* 透明 */
+    /* background-color: rgba(255,0,0,0.3); 除錯用紅色 */
+}
+
+/* 小三角形箭頭 */
+.dropdown-content::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent rgba(30, 30, 30, 0.98) transparent;
+    pointer-events: none; /* 讓滑鼠穿透箭頭 */
+}
+
+/* 觸發顯示 */
+.nav-item-dropdown:hover .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0); /* 浮動歸位 */
+}
+
+/* 下拉選單內的連結 */
+.dropdown-content a {
+    color: #ddd;
+    padding: 12px 20px;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    font-size: 0.95em;
+    transition: 0.2s;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    white-space: nowrap; /* 防止換行 */
+}
+
+.dropdown-content a:last-child {
+    border-bottom: none;
+}
+
+.dropdown-content a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #e67e22;
+    padding-left: 25px; /* 輕微位移效果 */
 }
 
 /* Logo 按鈕特殊樣式 */
 nav a.logo-button {
-    padding: 0 10px; 
+    padding: 0 15px; 
     background-color: transparent; 
     border-radius: 8px;
     margin: 0 5px;
@@ -83,15 +182,39 @@ nav a.logo-button {
 }
 
 nav a.logo-button:hover {
-    background-color: rgba(255,255,255,0.1);
-    transform: scale(1.05);
+    transform: scale(1.08);
 }
 
 .nav-logo {
-    height: 55px; /* Logo 高度 */
+    height: 60px; /* Logo 稍微加大 */
     width: auto;
     vertical-align: middle;
-    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+    filter: drop-shadow(0 4px 4px rgba(0,0,0,0.5));
+    transition: transform 0.3s;
+}
+
+/* ★★★ 班表按鈕凸顯設計 (Highlight Schedule) ★★★ */
+.nav-highlight {
+    background: linear-gradient(135deg, #e67e22, #d35400); /* 亮橘漸層 */
+    color: white !important;
+    font-weight: bold;
+    padding: 10px 24px; /* 比一般按鈕大 */
+    border-radius: 50px; /* 膠囊狀 */
+    box-shadow: 0 4px 15px rgba(230, 126, 34, 0.5);
+    text-decoration: none;
+    font-size: 1.05em;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 彈跳效果 */
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.nav-highlight:hover {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(230, 126, 34, 0.7);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
 /* --- 3. 主要容器 Main --- */
@@ -346,12 +469,58 @@ tr:hover {
     background: linear-gradient(135deg, #9b59b6, #e74c3c); 
 }
 
+/* ★★★ 電話按鈕樣式 (穩重深色系) ★★★ */
+.btn-phone {
+    background-color: #34495e; /* 深藍灰 */
+}
+.btn-phone:hover {
+    background-color: #2c3e50;
+}
+
 /* 普通次級按鈕 (用在內頁跳轉) */
 .content-page .secondary-btn {
     background: #7f8c8d; /* 灰色系 */
 }
 .content-page .secondary-btn:hover {
     background: #95a5a6;
+}
+
+/* ★★★ 新增：子分頁「返回」導航按鈕樣式 ★★★ */
+.back-nav-container {
+    margin-bottom: 25px;
+}
+
+.back-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 18px;
+    background-color: #f8f9fa;
+    color: #555;
+    text-decoration: none;
+    border-radius: 25px;
+    border: 1px solid #ddd;
+    font-weight: 600;
+    font-size: 0.95em;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.back-nav-btn:hover {
+    background-color: #e67e22;
+    color: white;
+    border-color: #e67e22;
+    transform: translateX(-5px); /* 往左滑動效果 */
+    box-shadow: 0 4px 8px rgba(230, 126, 34, 0.2);
+}
+
+.back-nav-btn span {
+    margin-right: 8px;
+    font-size: 1.1em;
+    transition: transform 0.3s ease;
+}
+
+.back-nav-btn:hover span {
+    transform: translateX(-3px); /* 箭頭額外移動 */
 }
 
 /* --- 8. SEO 區塊樣式 --- */
@@ -389,7 +558,8 @@ footer {
 }
 
 .footer-contact {
-    max-width: 800px;
+    max-width: 1200px; /* 修正：放寬最大寬度，讓內容能並排 */
+    width: 95%; /* 確保在寬螢幕佔比足夠 */
     margin: 0 auto 20px auto;
     padding-bottom: 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -463,14 +633,26 @@ footer {
     }
 
     nav {
-        flex-direction: row; /* 手機版還是橫向排列比較好 */
+        flex-direction: row;
         padding: 0 5px;
+        align-items: center;
+        gap: 5px;
     }
 
-    nav a {
+    /* 手機版隱藏下拉，直接點擊按鈕 */
+    .dropdown-content {
+        display: none !important;
+    }
+
+    .nav-btn {
         padding: 6px 10px;
         font-size: 0.85em;
         margin: 2px;
+    }
+    
+    .nav-highlight {
+        padding: 8px 16px;
+        font-size: 0.9em;
     }
     
     /* 手機版 Logo 調整 */
@@ -479,8 +661,10 @@ footer {
         width: 100%;
         text-align: center;
         margin-bottom: 5px;
+        border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+        padding-bottom: 10px;
     }
-    .nav-logo { height: 60px; }
+    .nav-logo { height: 65px; }
 
     main { padding: 0 10px; }
     
@@ -493,9 +677,17 @@ footer {
         white-space: nowrap;
     }
 
+    /* 手機版 Footer 聯絡資訊 */
     .contact-info {
-        flex-direction: column;
+        flex-direction: row; /* 修正：手機版也改為橫向排列 (自動換行) */
+        flex-wrap: wrap;
         align-items: center;
+        justify-content: center;
+    }
+    
+    /* 讓手機版聯絡按鈕稍微緊湊一點 */
+    .contact-item {
+        margin-bottom: 5px;
+        font-size: 0.9em;
     }
 }
-

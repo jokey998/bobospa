@@ -231,20 +231,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 tdPhoto.appendChild(img);
                 tr.appendChild(tdPhoto);
 
-                // --- 2. 名字 & 標籤 ---
+                // --- 2. 名字 & 標籤 (優化按鈕樣式) ---
                 const tdName = document.createElement('td');
                 
                 // 名字連結
                 const nameLink = document.createElement('a');
                 nameLink.href = `reviews.html?name=${encodeURIComponent(person.name)}`;
                 nameLink.className = 'name-link';
-                nameLink.innerHTML = `<strong>${person.name}</strong> 🔗`;
+                nameLink.style.textDecoration = 'none'; // 移除底線
+                
+                // 加入顯眼的查看心得按鈕
+                nameLink.innerHTML = `
+                    <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 5px;">
+                        <span style="font-size: 1.3em; font-weight: bold; color: #2c3e50;">${person.name}</span>
+                        <span style="font-size: 0.9em; color: white; background: #e91e63; padding: 4px 10px; border-radius: 15px; box-shadow: 0 2px 4px rgba(233, 30, 99, 0.3); display: inline-flex; align-items: center;">
+                            👉 查看心得
+                        </span>
+                    </div>
+                `;
                 tdName.appendChild(nameLink);
                 
                 // 顯示該美容師的標籤
                 if (person.tags && person.tags.length > 0) {
                     const tagsDiv = document.createElement('div');
                     tagsDiv.className = 'tags-display';
+                    tagsDiv.style.marginTop = '8px'; // 增加一點間距
                     person.tags.forEach(t => {
                         const tSpan = document.createElement('span');
                         tSpan.className = 'tag-badge';
