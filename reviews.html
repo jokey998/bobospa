@@ -10,6 +10,66 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="logo.jpg" type="image/jpeg" sizes="640x640">
     <link rel="apple-touch-icon" href="logo.jpg">
+    <style>
+        /* 心得頁面專屬排版樣式 */
+        .review-layout-container {
+            display: flex;
+            flex-direction: column-reverse; /* 手機版：照片在下，文字在上，或是照片在上看喜好，這裡設定 column-reverse 讓手機版照片在上方(因HTML結構照片在後) */
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .review-text-area {
+            flex: 2;
+            width: 100%;
+        }
+
+        .review-image-area {
+            flex: 1;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .profile-photo {
+            width: 100%;
+            max-width: 350px; /* 限制照片最大寬度 */
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border: 5px solid #fff;
+            object-fit: cover;
+            aspect-ratio: 1/1; /* 保持正方形，或根據原圖比例移除此行 */
+            background-color: #f0f0f0;
+            transition: transform 0.3s;
+        }
+
+        .profile-photo:hover {
+            transform: scale(1.02);
+        }
+
+        /* 電腦版排版：左右並排 */
+        @media (min-width: 768px) {
+            .review-layout-container {
+                flex-direction: row; /* 左文右圖 */
+            }
+            /* 如果想要圖片緊貼頂部，可以調整 align-items */
+        }
+        
+        /* 手機版調整 */
+        @media (max-width: 767px) {
+            .review-layout-container {
+                flex-direction: column; /* 手機版：圖在上文在下 */
+            }
+            .review-image-area {
+                order: -1; /* 強制圖片區塊排在最上面 */
+                margin-bottom: 10px;
+            }
+            .profile-photo {
+                max-width: 250px; /* 手機版照片小一點 */
+            }
+        }
+    </style>
 </head>
 <body class="contact">
 
@@ -57,21 +117,30 @@
 
     <main class="content-page">
         <div style="text-align: center; margin-bottom: 30px;">
-            <a href="schedule.html" class="hero-btn secondary-btn" style="padding: 5px 15px; font-size: 0.9em;">← 返回班表</a>
+            <a href="schedule.html" class="back-nav-btn"><span>←</span> 返回班表</a>
         </div>
 
-        <h2 id="girl-name-title">美容師心得</h2>
-        
-        <div class="highlight-box" style="text-align: center; padding: 50px 20px;">
-            <!-- 使用 div 容器來容納可能的心得卡片，避免 p 標籤嵌套 div 的問題 -->
-            <div id="review-content" style="font-size: 1.2em; color: #444; line-height: 1.8;">資料載入中...</div>
-            
-            <p style="margin-top: 30px; font-size: 2.2em; color: #999; border-top: 1px dashed #ccc; padding-top: 20px;">
-                <strong>想了解更多細節，請私訊波波！</strong>歡迎體驗後與波波分享您的寶貴心得！
-            </p>
+        <div class="review-layout-container">
+            <!-- 左側：文字心得區 -->
+            <div class="review-text-area">
+                <h2 id="girl-name-title" style="border-bottom: none; text-align: left; margin-bottom: 15px;">美容師心得</h2>
+                
+                <div class="highlight-box" style="text-align: left; padding: 30px 25px; margin-top: 0;">
+                    <div id="review-content" style="font-size: 1.1em; color: #444; line-height: 1.8;">資料載入中...</div>
+                    
+                    <p style="margin-top: 30px; font-size: 1em; color: #999; border-top: 1px dashed #ccc; padding-top: 20px; text-align: center;">
+                        <strong>想了解更多細節，請私訊波波！</strong>歡迎體驗後與波波分享您的寶貴心得！
+                    </p>
+                </div>
+            </div>
+
+            <!-- 右側：照片區 -->
+            <div class="review-image-area">
+                <img id="girl-photo" src="" alt="美容師照片" class="profile-photo" onerror="this.src='logo.jpg'">
+            </div>
         </div>
 
-        <section style="margin-top: 30px;">
+        <section style="margin-top: 40px; border-top: 2px solid #eee; padding-top: 30px;">
             <h3>直接預約此美容師</h3>
             <p>心動了嗎？點擊下方按鈕立即預約！</p>
             <div class="cta-group">
@@ -127,14 +196,20 @@
             const name = params.get('name');
             const titleEl = document.getElementById('girl-name-title');
             const contentEl = document.getElementById('review-content');
+            const photoEl = document.getElementById('girl-photo'); // 獲取圖片元素
             
             if (!name) {
                 contentEl.textContent = "請先從班表選擇一位美容師。";
+                photoEl.style.display = "none"; // 沒有名字時隱藏圖片框
                 return;
             }
 
             document.title = `${name} - 美容師心得 | 波波舒壓會館`;
             titleEl.textContent = `美容師【${name}】的服務心得`;
+            
+            // 設定圖片路徑
+            photoEl.src = `${name}.jpg`;
+            photoEl.alt = `${name} 照片`;
 
             fetch('girls.json?v=' + new Date().getTime())
                 .then(response => {
@@ -160,13 +235,13 @@
                         } else {
                             // 舊格式：單一字串
                             contentEl.innerHTML = girl.review;
-                            contentEl.style.fontSize = "1.5em";
+                            contentEl.style.fontSize = "1.2em";
                         }
                         contentEl.style.color = "#2c3e50";
                     } else {
                         contentEl.innerHTML = "目前暫無文字心得。<br>想了解更多細節，歡迎直接私訊波波！";
                         contentEl.style.color = "#7f8c8d";
-                        contentEl.style.fontSize = "1.5em";
+                        contentEl.style.fontSize = "1.2em";
                     }
                 })
                 .catch(error => {
