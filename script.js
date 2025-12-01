@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 2. 更新標題
         if (todayTitle) {
             if (currentMode === 'today') {
-                todayTitle.textContent = `📅 今日 (${today}) 上班美容師`;
+                todayTitle.textContent = `📅 今日 (${today}) 推薦美容師`;
             } else {
                 todayTitle.textContent = `📋 全部美容師班表`;
             }
