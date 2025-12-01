@@ -178,8 +178,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentMode === 'today') {
                 todayTitle.textContent = `📅 今日 (${today}) 推薦美容師`;
             } else {
-                todayTitle.textContent = `📋 全部美容師班表`;
-            }
+
+                        // 全部模式
+                        if (selectedDay !== 'all') {
+                            // 選了某一天
+                            todayTitle.textContent = `${selectedDay}推薦名單`;
+                        } else {
+                            // 沒選任何特定星期（全部）
+                            todayTitle.textContent = `📋 全部美容師班表`;
+                        }
+
+                    }
         }
 
         // 3. 渲染表格
