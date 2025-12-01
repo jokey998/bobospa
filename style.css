@@ -17,8 +17,8 @@ body {
 }
 
 /* 頁面背景圖設定 */
-body:not(.lounge-background) { background-image: url('chair.jpg'); }
-body.contact { background-image: url('contact.jpg'); }
+body:not(.lounge-background) { background-image: url('maain.jpg'); }
+body.contact { background-image: url('main.jpg'); }
 body.booking { background-image: url('main.jpg'); }
 body.faq { background-image: url('main.jpg'); }
 body.lounge-background { background-image: url('beach.png'); }
