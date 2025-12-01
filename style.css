@@ -20,7 +20,7 @@ body {
 body:not(.lounge-background) { background-image: url('chair.jpg'); }
 body.contact { background-image: url('contact.jpg'); }
 body.booking { background-image: url('main.jpg'); }
-body.faq { background-image: url('bed.jpg'); }
+body.faq { background-image: url('main.jpg'); }
 body.lounge-background { background-image: url('beach.png'); }
 
 /* --- 2. Header & Navigation (全站通用 - 設計感升級版) --- */
