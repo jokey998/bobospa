@@ -17,11 +17,11 @@ body {
 }
 
 /* 頁面背景圖設定 */
-body:not(.lounge-background) { background-image: url('maain.jpg'); }
-body.contact { background-image: url('main.jpg'); }
-body.booking { background-image: url('main.jpg'); }
-body.faq { background-image: url('main.jpg'); }
-body.lounge-background { background-image: url('beach.png'); }
+body:not(.lounge-background) { background-image: url('beach.png'); }
+body.contact { background-image: url('beach.png'); }
+body.booking { background-image: url('beach.png'); }
+body.faq { background-image: url('beach.png'); }
+body.lounge-background { background-image: url('main.jpg'); }
 
 /* --- 2. Header & Navigation (全站通用 - 設計感升級版) --- */
 header {
