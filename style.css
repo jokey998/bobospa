@@ -110,7 +110,7 @@ body.lounge-background { background-image: url('main.jpg'); }
 header {
     background-color: rgba(40, 40, 40, 0.95);
     color: white;
-    padding: 8px 0;                 /* 原本 12px → 稍微變薄 */
+    padding: 2px 0;                 /* 原本 12px → 稍微變薄 */
     text-align: center;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     position: sticky;
@@ -122,7 +122,7 @@ header {
 
 header h1 {
     margin: 3px 0 10px 0;           /* 上下間距縮小 */
-    font-size: 1.25em;              /* 原本 1.4em → 略縮 */
+    font-size: 1.1em;              /* 原本 1.4em → 略縮 */
     font-weight: 700;
     text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     letter-spacing: 1.5px;
@@ -134,7 +134,7 @@ nav {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    gap: 8px;                       /* 原本 12px → 稍微縮小 */
+    gap: 6px;                       /* 原本 12px → 稍微縮小 */
     padding: 0 8px;                 /* 原本 0 10px → 縮一點 */
 }
 
@@ -142,10 +142,10 @@ nav {
 .nav-btn {
     color: #ecf0f1;
     text-decoration: none;
-    padding: 6px 14px;              /* 原本 8px 18px → 變瘦小一點 */
+    padding: 5px 13px;              /* 原本 8px 18px → 變瘦小一點 */
     border-radius: 25px;
     transition: all 0.3s ease;
-    font-size: 0.9em;               /* 原本 0.95em → 略小 */
+    font-size: 0.85em;               /* 原本 0.95em → 略小 */
     font-weight: 500;
     border: 1px solid rgba(255, 255, 255, 0.3);
     background-color: rgba(255, 255, 255, 0.05);
@@ -159,11 +159,11 @@ nav {
     background: linear-gradient(135deg, #e67e22, #d35400);
     color: white !important;
     font-weight: bold;
-    padding: 8px 20px;              /* 原本 10px 24px → 小一階 */
+    padding: 7px 17px;              /* 原本 10px 24px → 小一階 */
     border-radius: 50px;
     box-shadow: 0 4px 15px rgba(230, 126, 34, 0.5);
     text-decoration: none;
-    font-size: 1em;                 /* 原本 1.05em → 略小 */
+    font-size: 0.95em;                 /* 原本 1.05em → 略小 */
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: inline-flex;
     align-items: center;
@@ -173,7 +173,7 @@ nav {
 
 /* Logo 大小 */
 .nav-logo {
-    height: 50px;                   /* 原本 60px → 小一點 */
+    height: 48px;                   /* 原本 60px → 小一點 */
     width: auto;
     vertical-align: middle;
     filter: drop-shadow(0 4px 4px rgba(0,0,0,0.5));
