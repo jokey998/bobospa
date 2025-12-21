@@ -292,7 +292,12 @@
             #schedule-table th:nth-child(2),
             #schedule-table td:nth-child(2){ width:38%; }  /* 美容師+tags */
             #schedule-table th:nth-child(3),
-            #schedule-table td:nth-child(3){ width:24%; }  /* 上班時間 */
+            #schedule-table td:nth-child(3){ 
+            width:24%; 
+               vertical-align: top;     /* ✅ 不要垂直置中 */
+    text-align: center;      /* ✅ 文字水平置中（跟表頭一致） */
+    line-height: 1.2;
+            }  /* 上班時間 */
             #schedule-table th:nth-child(4),
             #schedule-table td:nth-child(4){ width:14%; }  /* 費用 */
 
