@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         workTimeDisplay = days.join(', ');
                         if(!workTimeDisplay) workTimeDisplay = "暫無班表";
                     }
-                }
+                } 
 
                 // --- 1. 照片 ---
                 const tdPhoto = document.createElement('td');
