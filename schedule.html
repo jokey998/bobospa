@@ -90,6 +90,28 @@
             margin-bottom: 5px;
         }
 
+        .name-block{
+            display:flex;
+            flex-direction:column;
+            align-items:flex-start;
+            gap:5px;
+            }
+            .name-title{
+            font-size:1.3em;
+            font-weight:bold;
+            color:#2c3e50;
+            }
+            .review-pill{
+            font-size:0.9em;
+            color:#fff;
+            background:#e91e63;
+            padding:4px 10px;
+            border-radius:15px;
+            box-shadow:0 2px 4px rgba(233,30,99,0.3);
+            display:inline-flex;
+            align-items:center;
+            }
+
         /* 標籤小徽章 */
         .tag-badge {
             display: inline-block;
@@ -247,6 +269,64 @@
                 flex-direction: column;
                 align-items: stretch;
             }
+            /* ✅ 手機：不左右滑的關鍵 */
+            #schedule-table{
+            width:100%;
+            table-layout:fixed;
+            min-width:0;
+            }
+            #schedule-table th, #schedule-table td{
+            padding:6px 4px;
+            font-size:12px;
+            overflow-wrap:anywhere;   /* 防止長字撐寬 */
+            word-break:break-word;
+            }
+            #schedule-table thead th{
+            font-size:11px;
+            line-height:1.15;
+            }
+
+            /* ✅ 四欄同屏：用百分比固定分配 */
+            #schedule-table th:nth-child(1),
+            #schedule-table td:nth-child(1){ width:24%; }  /* 照片 */
+            #schedule-table th:nth-child(2),
+            #schedule-table td:nth-child(2){ width:38%; }  /* 美容師+tags */
+            #schedule-table th:nth-child(3),
+            #schedule-table td:nth-child(3){ width:24%; }  /* 上班時間 */
+            #schedule-table th:nth-child(4),
+            #schedule-table td:nth-child(4){ width:14%; }  /* 費用 */
+
+            /* ✅ 照片再縮一點（搭配 24% 欄寬更穩） */
+            .beautician-img{
+            width:64px;
+            height:64px;
+            }
+
+            /* ✅ 美容師名字/查看心得/Tags 全部縮小，但不隱藏 */
+            .name-title{ font-size:1.0em; }
+            .review-pill{
+            font-size:0.72em;
+            padding:2px 6px;
+            border-radius:12px;
+            }
+            .tags-display{
+            margin-top:4px;           /* 取代 JS 的 inline margin */
+            display:flex;
+            flex-wrap:wrap;
+            gap:3px;
+            }
+            .tag-badge{
+            font-size:0.65em;         /* 你原本是 0.8em :contentReference[oaicite:4]{index=4} */
+            padding:1px 4px;
+            margin:0;
+            }
+
+            /* ✅ 上方「標籤篩選器」也縮小一點（避免控制面板太佔空間） */
+            .tag-filter{
+            font-size:0.75em;         /* 你原本是 0.9em :contentReference[oaicite:5]{index=5} */
+            padding:3px 8px;
+            }
+
         }
     </style>
 </head>
